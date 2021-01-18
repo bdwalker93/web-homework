@@ -31,6 +31,7 @@ For **junior engineers** complete any 1 of these objectives and include a basic 
  * Seed the database.  Possible solutions include:
    * Implement provided `seeds.ex` file
    * Write a `.sql` file that can be ingested by the database
+   * ~~Seed the Mongo DB via mongoose~~
 
  * Write tests for the resolvers & mutations.
    * Testing that you can get information from the resolver queries
