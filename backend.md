@@ -47,6 +47,6 @@ For **junior engineers** complete any 1 of these objectives and include a basic 
    * The queries should convert the Integer amount to a Decimal e.g. 2468 becomes 24.68
 
 ## Bonus points
- * Find the bug with transactions
+ * ~~Find the bug with transactions~~ 
  * Find the security issue
  * Add/improve the docs and @spec to functions
