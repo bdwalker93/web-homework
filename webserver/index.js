@@ -19,8 +19,8 @@ module.exports = function main (options, cb) {
     options
   )
 
-  // const logger = pino({ prettyPrint: true })
-  const logger = pino()
+   const logger = pino({ prettyPrint: true })
+  // const logger = pino()
 
   // Server state
   let server
@@ -74,7 +74,7 @@ module.exports = function main (options, cb) {
 
   // Common middleware
   // app.use(/* ... */)
-  app.use(pinoHttp({ logger }))
+  //app.use(pinoHttp({ logger }))
 
   // Register routes
   // @NOTE: require here because this ensures that even syntax errors

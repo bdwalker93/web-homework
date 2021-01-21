@@ -2,6 +2,7 @@ const pino = require('pino')
 const mongoose = require('mongoose')
 const { TransactionModel } = require('./data-models/Transaction')
 const { UserModel } = require('./data-models/User')
+const { CompanyModel } = require('./data-models/Company')
 
 const logger = pino({ prettyPrint: true })
 
@@ -22,21 +23,26 @@ db.once("open", function() {
     logger.info("Connection Successful!");
 });
 
-const SEED_LIST = [
+const USERS_TRANSACTIONS_SEED = [
   {
-    user: {firstName: "firstName1", lastName: "lastName1", dob: "dob1"},
+    user: {firstName: "firstName1", lastName: "lastName1", dob: "dob1", company_id: "company1"},
     transactions: [
-      {user_id: "", amount: 1.0, credit: false, debit: true, description: "purchase1", merchant_id: "merchant1"},
-      {user_id: "", amount: 2.0, credit: false, debit: true, description: "purchase2", merchant_id: "merchant2"},
+      {user_id: "", amount: 1.0, credit: false, debit: true, description: "purchase1", merchant_id: "merchant1", company_id: "company1"},
+      {user_id: "", amount: 2.0, credit: false, debit: true, description: "purchase2", merchant_id: "merchant2", company_id: "company1"},
     ]
   },
   {
-    user: {firstName: "firstName2", lastName: "lastName2", dob: "dob2"},
+    user: {firstName: "firstName2", lastName: "lastName2", dob: "dob2", company_id: "company2"},
     transactions: [
-      {user_id: "", amount: 3.0, credit: false, debit: true, description: "purchase3", merchant_id: "merchant1"},
-      {user_id: "", amount: 4.0, credit: true, debit: false, description: "purchase4", merchant_id: "merchant3"},
+      {user_id: "", amount: 3.0, credit: false, debit: true, description: "purchase3", merchant_id: "merchant1", company_id: "company2"},
+     {user_id: "", amount: 4.0, credit: true, debit: false, description: "purchase4", merchant_id: "merchant3", company_id: "company2"}
     ]
   },
+]
+
+const COMPANIES_SEED= [
+  {name: "company1", credit_line: 1000, available_credit: 1000},
+  {name: "company2", credit_line: 2000, available_credit: 2000},
 ]
 
 const  displayTransactions = async =>{
@@ -49,13 +55,21 @@ const displayUsers = async => {
 
   const query = UserModel.find();
   return query.exec();
+
+}
+const displayCompanies = async => {
+  const query = CompanyModel.find();
+  return query.exec();
 }
 
 const clearDb = async => {
-  return UserModel.deleteMany({}).then(function(){
+  return UserModel.deleteMany({}).then(() => {
     logger.info("USERS DELETED");
-    return TransactionModel.deleteMany({}).then(function(){
-    logger.info("TRANSACTIONS DELETED");
+    return TransactionModel.deleteMany({}).then(() => {
+      logger.info("TRANSACTIONS DELETED");
+      return CompanyModel.deleteMany({}).then(() => {
+        logger.info("DELETED");
+      });
     });
   });
 }
@@ -74,8 +88,16 @@ const addUser = async item => {
   });
 }
 
+const addCompany = async company => {
+  logger.info("seeding companies")
+  const comapnyModel= new CompanyModel(company);
+  return  comapnyModel.save();
+}
+
 const seedDb = async () => {
-    return Promise.all(SEED_LIST.map(item => addUser(item)))
+  return Promise.all(USERS_TRANSACTIONS_SEED.map(item => addUser(item))).then(() => {
+    return Promise.all(COMPANIES_SEED.map(company => addCompany(company)));
+  })
 }
 
 clearDb().then(() => seedDb()).then(() => {
@@ -87,6 +109,11 @@ clearDb().then(() => seedDb()).then(() => {
   logger.info("Displaying Transactions");
   return displayTransactions().then((trans) => {
     logger.info(trans);
+  });
+}).then(() => {
+  logger.info("Displaying Companies");
+  return displayCompanies().then((companies) => {
+    logger.info(companies);
   });
 }).then(() => db.close());
 
