@@ -56,7 +56,7 @@ const RootQuery = new GraphQLObjectType({
     companies: {
       type: GraphQLList(CompanyType),
       args: {
-        name: { type: GraphQLFloat },
+        name: { type: GraphQLString },
         credit_line: { type: GraphQLFloat },
         available_credit: { type: GraphQLFloat },
       },
