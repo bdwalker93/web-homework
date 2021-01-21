@@ -25,8 +25,8 @@ For **junior engineers** complete any 1 of these objectives and include a basic 
    * getting back transactions with an amount between `min` and `max` arguments
 
  * Write a new schema, queries, and mutations to add companies to the app
-   * users should belong to a company and we should require transactions to pass in a company_id
-   * company should have a `name`, `credit_line`, and `available_credit` which would be the `credit_line` minus the total amount of `transactions` for the company
+   * ~~users should belong to a company and we should require transactions to pass in a company_id~~
+   * ~~company should have a `name`, `credit_line`, and `available_credit` which would be the `credit_line` minus the total amount of `transactions` for the company~~
 
  * Seed the database.  Possible solutions include:
    * Implement provided `seeds.ex` file
